@@ -10,7 +10,8 @@
 mkdir -p /tmp/plex/
 cd /tmp/plex/ || exit
 
-url="https://plex.tv/api/downloads/5.json"
+token=$(cat /volume1/Plex/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml | grep -oP 'PlexOnlineToken="\K[^"]+')
+url=$(echo "https://plex.tv/api/downloads/5.json?channel=plexpass&X-Plex-Token=$token")
 jq=$(curl -s "${url}")
 
 newversion=$(echo "$jq" | jq -r .nas.Synology.version | cut -d"-" -f1)
